@@ -84,11 +84,27 @@ The API uses URI versioning. All endpoints are prefixed with `/v1`.
   {
     "title": "The Great Book",
     "authorId": 1,
+    "publisherId": 1,
     "releaseDate": "2023-01-01"
   }
   ```
 - `PUT /v1/books/:id` - Update a book (requires all fields)
 - `DELETE /v1/books/:id` - Delete a book
+
+### Publishers (v1)
+- `GET /v1/publishers` - Get all publishers (paginated)
+  - Query parameters: `?page=1&limit=10` (optional, defaults: page=1, limit=10)
+  - Returns: `{ data: Publisher[], meta: { total, page, limit, totalPages, pageCount } }`
+- `GET /v1/publishers/:id` - Get publisher by ID
+- `POST /v1/publishers` - Create a new publisher
+  ```json
+  {
+    "name": "Penguin Books",
+    "address": "123 Publishing St"
+  }
+  ```
+- `PUT /v1/publishers/:id` - Update a publisher (requires all fields)
+- `DELETE /v1/publishers/:id` - Delete a publisher
 
 ## Testing
 

@@ -18,11 +18,11 @@ services:
       timeout: 5s
       retries: 5
 
-  app:
+  book-service:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: drata-app
+      dockerfile: ./book-service/Dockerfile
+    container_name: drata-book-service
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -37,6 +37,29 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+
+  store-service:
+    build:
+      context: .
+      dockerfile: ./store-service/Dockerfile
+    container_name: drata-store-service
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: testuser
+      DB_PASSWORD: testpassword
+      DB_DATABASE: testdb
+      BOOK_SERVICE_URL: http://book-service:3000
+    depends_on:
+      mysql:
+        condition: service_healthy
+      book-service:
+        condition: service_started
 
 volumes:
   mysql_data:
